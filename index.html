@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>balls</title>
+</head>
+<body>
+<script src="https://cdn.rawgit.com/pzp1997/p5-matter/2c5be6b2/template/lib/p5.js/0.5.11/p5.min.js"></script>
+<script src="https://cdn.rawgit.com/pzp1997/p5-matter/2c5be6b2/template/lib/matter.js/0.12.0/matter.min.js"></script>
+<script src="https://cdn.rawgit.com/pzp1997/p5-matter/2c5be6b2/template/lib/p5-matter/1.1.0/p5-matter.min.js"></script>
+<script src="https://cdn.rawgit.com/dorukeker/gyronorm.js/dc39e226/dist/gyronorm.complete.min.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+
+var ball;
+var bgColor;
+var fgColor;
+
+function setup() {
+  createCanvas(800, 800);
+  noStroke();
+
+  matter.init();
+  matter.changeGravity(0, 0);
+
+  var floor = matter.makeBarrier(width / 2, -50, width, 100);
+  var ceiling = matter.makeBarrier(width / 2, height + 50, width, 100);
+  var leftWall = matter.makeBarrier(-50, height / 2, 100, height);
+  var rightWall = matter.makeBarrier(width + 50, height / 2, 100, height);
+
+  ball = matter.makeBall(random(0, width), random(0, height), 30);
+  bgColor = color(255, 255, 255);
+  fgColor = color(64, 64, 64);
+}
+
+function draw() {
+  background(bgColor);
+  fill(fgColor);
+  ball.show();
+}
+
+var gn = new GyroNorm();
+
+gn.init().then(function () {
+  gn.start(function (data) {
+    matter.changeGravity(data.do.gamma / 90, data.do.beta / 90);
+  });
+});
+
+/*]]>*/
+</script>
+</body>
+</html>
