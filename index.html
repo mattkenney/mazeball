@@ -15,6 +15,7 @@
 var ball;
 var bgColor;
 var fgColor;
+var orientationUnknownMessage = 'Play mazeball on your phone.';
 
 function setup() {
   createCanvas(800, 800);
@@ -39,14 +40,24 @@ function draw() {
   ball.show();
 }
 
-var gn = new GyroNorm();
+var gyro = new GyroNorm();
+var zeroCount = 0;
 
-gn.init().then(function () {
-  gn.start(function (data) {
+gyro.init().then(function () {
+  gyro.start(function (data) {
     matter.changeGravity(data.do.gamma / 90, data.do.beta / 90);
+
+    if (data.do.gamma === 0 && data.do.beta  === 0 && zeroCount >= 0) {
+      if (zeroCount++ > 20) {
+        gyro.end();
+        alert(orientationUnknownMessage);
+      }
+    } else {
+        zeroCount = -1;
+    }
   });
 }).catch(function () {
-  alert('Play mazeball on your phone.');
+  alert(orientationUnknownMessage);
 });
 
 /*]]>*/
