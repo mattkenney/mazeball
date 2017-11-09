@@ -45,6 +45,8 @@ gn.init().then(function () {
   gn.start(function (data) {
     matter.changeGravity(data.do.gamma / 90, data.do.beta / 90);
   });
+}).catch(function () {
+  alert('Play mazeball on your phone.');
 });
 
 /*]]>*/
